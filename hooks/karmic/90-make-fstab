@@ -60,6 +60,7 @@ cat <<E_O_FSTAB > ${prefix}/etc/fstab
 # /etc/fstab: static file system information.
 #
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
+dev             /dev            devtmpfs rw              0       0 
 proc            /proc           proc    defaults        0       0
 devpts          /dev/pts        devpts  rw,noexec,nosuid,gid=5,mode=620 0  0
 E_O_FSTAB
