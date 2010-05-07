@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# plymouth switches virtual terminals but doesnt exit cleanly, so its easier to just disable it for compatibility with xen VNC sessions
+
+prefix=$1
+
+
+#
+#  Source our common functions
+#
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    . ./hooks/common.sh
+fi
+
+
+#
+# Log our start
+#
+logMessage Script $0 starting
+
+
+if [ -x ${prefix}/bin/plymouth ] ; then
+	logMessage Disabling plymouth
+	chmod -x ${prefix}/bin/plymouth
+fi
+
+#
+#  Log our finish
+#
+logMessage Script $0 finished
