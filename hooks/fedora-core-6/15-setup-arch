@@ -17,6 +17,7 @@ fi
 #
 logMessage Script $0 starting
 
+# FIXME: This is a rinse bug, it doesnt really belong in xen-tools
 
 #
 #  Record arch, if present.
@@ -29,7 +30,7 @@ if [ -d $prefix/etc/rpm ]; then
     #  If i386 then record this
     #
     if [ "$arch" = "i386" ]; then
-        echo "i386-fedora-linux-gnu" >> $prefix/etc/rpm/platform
+        echo "i686-fedora-linux-gnu" >> $prefix/etc/rpm/platform
     fi
 else
 
