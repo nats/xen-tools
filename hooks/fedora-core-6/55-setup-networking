@@ -31,6 +31,9 @@ logMessage Script $0 starting
 #
 mkdir -p ${prefix}/etc/sysconfig/network-scripts/
 
+# Ensure networking is enabled, in recent Fedora's it is disabled by default
+chroot ${prefix} /sbin/chkconfig network on
+
 
 #
 #  Test for static vs. DHCP
