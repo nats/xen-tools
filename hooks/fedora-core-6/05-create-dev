@@ -42,10 +42,10 @@ fi
 #
 #  Make the device nodes.
 #
-chroot ${prefix} /bin/sh -c 'cd /dev && ./MAKEDEV console'
-chroot ${prefix} /bin/sh -c 'cd /dev && ./MAKEDEV null'
-chroot ${prefix} /bin/sh -c 'cd /dev && ./MAKEDEV zero'
-
+chroot ${prefix} /sbin/MAKEDEV -x console
+chroot ${prefix} /sbin/MAKEDEV -x null
+chroot ${prefix} /sbin/MAKEDEV -x zero
+chroot ${prefix} /sbin/MAKEDEV -x urandom
 
 #
 #  Log our finish
