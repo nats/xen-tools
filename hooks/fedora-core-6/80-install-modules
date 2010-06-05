@@ -32,7 +32,14 @@ logMessage Script $0 starting
 # really copy the *correct* modules, but we don't know what they are.
 #
 mkdir -p ${prefix}/lib/modules
-cp -au /lib/modules/*/ ${prefix}/lib/modules
+
+# If we were not supplied a valid modules directory, just use the standard one
+if [ -z "${modules}" -o ! -d "${modules}" ]; then
+	modules=/lib/modules/*
+fi
+echo "Copying ${modules}"
+cp -au ${modules} ${prefix}/lib/modules
+
 
 
 #
