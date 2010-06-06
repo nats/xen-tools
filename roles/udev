@@ -25,7 +25,7 @@ fi
 #
 #  Install udev.
 #
-installDebianPackage ${prefix} udev
+installPackage ${prefix} udev
 
 
 #
