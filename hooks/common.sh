@@ -220,6 +220,37 @@ installCentOS4Package ()
 }
 
 
+installZypperPackage ()
+{
+    prefix=$1
+    package=$2
+
+    #
+    # Log our options
+    #
+    logMessage "Installing Zypper ${package} to prefix ${prefix}"
+
+    #
+    #  We require a package + prefix
+    #
+    assert "$LINENO" "${package}"
+    assert "$LINENO" "${prefix}"
+
+    #
+    # Prefix must be a directory.
+    #
+    assert "$LINENO" -d ${prefix}
+
+    #
+    # Install the package. Move uuidd out of the way to stop it starting 
+    #
+    local uuidd="${prefix}/usr/sbin/uuidd"
+    mv "${uuidd}" "${uuidd}.REAL"
+    chroot ${prefix} /usr/bin/zypper -n install ${package}
+    mv "${uuidd}.REAL" "${uuidd}"
+}
+
+
 
 #
 #  Install a package using whatever package management tool is available
@@ -234,6 +265,9 @@ installPackage ()
 
 	elif [ -x ${prefix}/usr/bin/yum ] ; then
 		installCentOS4Package "$@"
+
+	elif [ -x ${prefix}/usr/bin/zypper ] ; then
+		installZypperPackage "$@"
 
 	else
 		logMessage "Unable to install package ${package}; no package manager found"
