@@ -32,7 +32,7 @@ if [ ! -d ${prefix}/proc ]; then
     mkdir -p ${prefix}/proc
 fi
 mount -o bind /proc ${prefix}/proc
-chroot ${prefix} /usr/bin/zypper  -n install openssh-server passwd
+chroot ${prefix} /usr/bin/zypper  -n install openssh
 umount ${prefix}/proc
 
 
