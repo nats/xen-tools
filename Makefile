@@ -143,6 +143,7 @@ install-hooks:
 	mkdir -p ${prefix}/usr/lib/xen-tools/centos-4.d/
 	mkdir -p ${prefix}/usr/lib/xen-tools/centos-5.d/
 	mkdir -p ${prefix}/usr/lib/xen-tools/fedora-core-6.d/
+	mkdir -p ${prefix}/usr/lib/xen-tools/opensuse-11.1.d/
 	cp -R hooks/centos-4/*-* ${prefix}/usr/lib/xen-tools/centos-4.d
 	cp -R hooks/centos-5/*-* ${prefix}/usr/lib/xen-tools/centos-5.d
 	cp -R hooks/fedora-core-6/*-* ${prefix}/usr/lib/xen-tools/fedora-core-6.d
@@ -155,6 +156,7 @@ install-hooks:
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-11.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-12.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-13.d
+	cp -R hooks/opensuse/*-* ${prefix}/usr/lib/xen-tools/opensuse-11.1.d
 	mkdir -p ${prefix}/usr/lib/xen-tools/debian.d/
 	cp -R hooks/debian/*-* ${prefix}/usr/lib/xen-tools/debian.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s debian.d sarge.d
