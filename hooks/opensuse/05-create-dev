@@ -40,11 +40,10 @@ fi
 
 
 #
-#  Make the device nodes.
+#  Make the device nodes. Suse seems to create null and zero, but not console
+#  OpenSUSE MAKEDEV package appears to be broken, so create the node directly
 #
-chroot ${prefix} /sbin/MAKEDEV -x console
-chroot ${prefix} /sbin/MAKEDEV -x null
-chroot ${prefix} /sbin/MAKEDEV -x zero
+mknod ${prefix}/dev/console c 5 1
 
 
 #
