@@ -33,6 +33,7 @@ if [ ! -d ${prefix}/proc ]; then
 fi
 mount -o bind /proc ${prefix}/proc
 chroot ${prefix} /usr/bin/zypper  -n install openssh
+chroot ${prefix} /sbin/chkconfig sshd on
 umount ${prefix}/proc
 
 
