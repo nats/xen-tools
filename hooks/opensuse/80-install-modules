@@ -40,7 +40,6 @@ fi
 echo "Copying ${modules}"
 cp -au ${modules} ${prefix}/lib/modules
 
-# Suse seems to have a weird module dependency setup, it cant just use the normal dependency files
 chroot ${prefix} /sbin/depmod -a `ls -1 ${prefix}/lib/modules`
 
 #

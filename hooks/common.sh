@@ -245,9 +245,9 @@ installZypperPackage ()
     # Install the package. Move uuidd out of the way to stop it starting 
     #
     local uuidd="${prefix}/usr/sbin/uuidd"
-    mv "${uuidd}" "${uuidd}.REAL"
+    test -e ${uuidd} && mv ${uuidd} ${uuidd}.REAL
     chroot ${prefix} /usr/bin/zypper -n install ${package}
-    mv "${uuidd}.REAL" "${uuidd}"
+    test -e ${uuidd}.REAL && mv ${uuidd}.REAL ${uuidd}
 }
 
 
