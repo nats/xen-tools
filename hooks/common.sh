@@ -214,9 +214,14 @@ installCentOS4Package ()
     assert "$LINENO" -d ${prefix}
 
     #
-    # Install the package
+    # Install the package. A working /proc is required by yum
     #
+    if [ ! -d ${prefix}/proc ]; then
+        mkdir -p ${prefix}/proc
+    fi
+    mount -o bind /proc ${prefix}/proc
     chroot ${prefix} /usr/bin/yum -y install ${package}
+    umount ${prefix}/proc
 }
 
 
