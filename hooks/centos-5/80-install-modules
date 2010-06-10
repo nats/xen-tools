@@ -40,6 +40,7 @@ fi
 echo "Copying ${modules}"
 cp -au ${modules} ${prefix}/lib/modules
 
+generateModulesDep ${prefix}
 
 #
 #  Log our finish

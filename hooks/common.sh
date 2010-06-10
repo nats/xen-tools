@@ -295,3 +295,14 @@ installGentooPackage ()
 
 }
 
+
+#
+#  Run depmod on the installed modules
+#
+generateModulesDep ()
+{
+    prefix=$1
+    logMessage "Generating module dependencies to prefix ${prefix}"
+    chroot ${prefix} /sbin/depmod -a `ls -1 ${prefix}/lib/modules`
+}
+

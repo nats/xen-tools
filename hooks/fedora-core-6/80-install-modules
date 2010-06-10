@@ -39,6 +39,7 @@ if [ -z "${modules}" -o ! -d "${modules}" ]; then
 fi
 echo "Copying ${modules}"
 cp -au ${modules} ${prefix}/lib/modules
+generateModulesDep ${prefix}
 
 
 
