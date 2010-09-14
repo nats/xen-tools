@@ -158,6 +158,7 @@ install-hooks:
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-13.d
 	cp -R hooks/opensuse/*-* ${prefix}/usr/lib/xen-tools/opensuse-11.1.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s opensuse-11.1.d opensuse-11.2.d
+	-cd ${prefix}/usr/lib/xen-tools/ && ln -s opensuse-11.1.d opensuse-11.3.d
 	mkdir -p ${prefix}/usr/lib/xen-tools/debian.d/
 	cp -R hooks/debian/*-* ${prefix}/usr/lib/xen-tools/debian.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s debian.d sarge.d
