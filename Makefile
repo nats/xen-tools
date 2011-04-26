@@ -156,6 +156,7 @@ install-hooks:
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-11.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-12.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-13.d
+	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-14.d
 	cp -R hooks/opensuse/*-* ${prefix}/usr/lib/xen-tools/opensuse-11.1.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s opensuse-11.1.d opensuse-11.2.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s opensuse-11.1.d opensuse-11.3.d
@@ -182,6 +183,7 @@ install-hooks:
 	mkdir -p ${prefix}/usr/lib/xen-tools/karmic.d/
 	cp -R hooks/karmic/*-* ${prefix}/usr/lib/xen-tools/karmic.d/
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s karmic.d lucid.d
+	-cd ${prefix}/usr/lib/xen-tools/ && ln -s karmic.d maverick.d
 	cp hooks/common.sh ${prefix}/usr/lib/xen-tools
 
 
