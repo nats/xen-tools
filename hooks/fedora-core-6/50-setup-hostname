@@ -31,8 +31,9 @@ logMessage Script $0 starting
 #
 #  Setup the mailname + hostname files.
 #
-echo ${hostname} | sed 's/^\([^\.]*\)\..*/\1/' > ${prefix}/etc/hostname
-echo ${hostname} > ${prefix}/etc/mailname
+# Fedora does not use these
+#echo ${hostname} | sed 's/^\([^\.]*\)\..*/\1/' > ${prefix}/etc/hostname
+#echo ${hostname} > ${prefix}/etc/mailname
 
 
 #
