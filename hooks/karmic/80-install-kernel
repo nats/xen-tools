@@ -34,14 +34,13 @@ logMessage Script $0 starting
 #
 # linux_kernel_type="desktop"
 # 
-linux_kernel_type="server"
+linux_kernel_type="extra-virtual"
 
 linux_kernel_package="linux-image-${linux_kernel_type}"
 
 logMessage "Installing the ${linux_kernel_package} kernel image"
 if chroot ${prefix} /usr/bin/apt-cache show ${linux_kernel_package} >/dev/null 2>/dev/null; then
     logMessage "Package '${linux_kernel_package}' is available - installing"
-    installDebianPackage ${prefix} initramfs-tools
     installDebianPackage ${prefix} ${linux_kernel_package}
 
 # Force initrd if none exists
