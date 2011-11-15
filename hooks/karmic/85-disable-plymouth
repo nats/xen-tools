@@ -26,6 +26,19 @@ if [ -x ${prefix}/bin/plymouth ] ; then
 	chmod -x ${prefix}/bin/plymouth
 fi
 
+# if plymouth comes back (eg apt-get upgrade), we wont have a visible terminal
+# unless we run a getty on tty7
+logMessage "Adding tty7 for Plymouth compatibility"
+
+copy_tty_device=tty1
+if [ ! -z "${serial_device}" ]; then
+    copy_tty_device=`basename ${serial_device}`
+fi
+
+cp -a ${prefix}/etc/init/${copy_tty_device}.conf  ${prefix}/etc/init/tty7.conf
+sed -i -e s/${copy_tty_device}/tty7/ ${prefix}/etc/init/tty7.conf
+echo tty7 >> ${prefix}/etc/securetty
+
 #
 #  Log our finish
 #
