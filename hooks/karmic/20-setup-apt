@@ -84,6 +84,7 @@ E_O_APT
 #  Now that the sources have been setup make sure the system is up to date.
 #
 chroot ${prefix} /usr/bin/apt-get update
+chroot ${prefix} /usr/bin/apt-get -y upgrade
 
 
 #
