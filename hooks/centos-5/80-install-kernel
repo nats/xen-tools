@@ -32,9 +32,6 @@ if [ ${pygrub} ]; then
 # remove old kernel/s
 chroot ${prefix} /usr/bin/yum remove -y kernel
 
-# install hidden dependency
-installCentOS4Package ${prefix} device-mapper-libs
-
 #
 # Resolve the correct architecutre
 #
