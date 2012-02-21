@@ -1,0 +1,98 @@
+#!/bin/sh
+#
+#  If the pygrub flag is set, this script will install the necessary
+# packages to boot the VM from the dom0 via pygrub. This script installs
+# the kernel and modules and generates a grub menu.lst in the newly
+# created maschine.
+#
+# Dmitry Nedospasov
+# --
+# http://nedos.net
+
+prefix=$1
+
+#
+#  Source our common functions
+#
+
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    . ./hooks/common.sh
+fi
+
+#
+# Log our start
+#
+
+logMessage Script $0 starting
+
+if [ ${pygrub} ]; then
+
+# remove old kernel/s
+chroot ${prefix} /usr/bin/yum remove -y kernel
+
+# install hidden dependency
+installCentOS4Package ${prefix} device-mapper-libs
+
+#
+# Resolve the correct architecutre
+#
+
+
+if [ "${arch}" = "i386" ]; then
+	KERNEL_PKG="kernel"
+	
+elif [ "${arch}" = "amd64" ]; then
+	KERNEL_PKG="kernel"
+else
+	logMessage Unkown kernel arhcitechture ${arch}
+	logMessage Script $0 failed
+	exit 1
+fi
+
+logMessage Attempting to install package $KERNEL_PKG
+if chroot ${prefix} /usr/bin/yum info $KERNEL_PKG > /dev/null 2>&1; then
+    logMessage Package $KERNEL_PKG is available - installing
+    installCentOS4Package ${prefix} $KERNEL_PKG
+else
+		logMessage Package $KERNEL_PKG is not available
+		logMessage pygrub set, but kernel could not be installed
+		logMessage Script $0 failed
+		exit 1
+fi
+
+DOMU_KERNEL=$(basename $(ls -1 ${prefix}/boot/vmlinuz* | tail -n 1))
+KERNEL_REV=$(echo $DOMU_KERNEL | sed "s/vmlinuz-//g")
+DOMU_RAMDISK="initramfs-$KERNEL_REV.img"
+DOMU_ISSUE=$(sed -re "s/ *\\\.*//g" -e1q < ${prefix}/etc/issue)
+
+#
+# Generate a menu.lst for pygrub
+#
+
+logMessage Creating menu.lst for $DOMU_ISSUE: booting $DOMU_KERNEL with initrd $DOMU_RAMDISK
+
+mkdir -p ${prefix}/boot/grub
+cat << E_O_MENU > ${prefix}/etc/grub.conf
+default         0
+timeout         1
+
+title           $DOMU_ISSUE
+root            (hd0)
+kernel          /boot/$DOMU_KERNEL root=/dev/xvda ro 
+initrd          /boot/$DOMU_RAMDISK
+
+E_O_MENU
+
+chroot ${prefix} ln -s /etc/grub.conf /boot/grub/menu.lst
+
+else
+    logMessage pygrub not set, skipping kernel install
+fi
+
+#
+#  Log our finish
+#
+
+logMessage Script $0 finished
