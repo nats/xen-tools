@@ -146,6 +146,7 @@ install-hooks:
 	mkdir -p ${prefix}/usr/lib/xen-tools/opensuse-11.1.d/
 	cp -R hooks/centos-4/*-* ${prefix}/usr/lib/xen-tools/centos-4.d
 	cp -R hooks/centos-5/*-* ${prefix}/usr/lib/xen-tools/centos-5.d
+	-cd ${prefix}/usr/lib/xen-tools/ && ln -s centos-5.d centos-6.d
 	cp -R hooks/fedora-core-6/*-* ${prefix}/usr/lib/xen-tools/fedora-core-6.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-core-4.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-core-5.d
