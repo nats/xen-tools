@@ -189,7 +189,8 @@ install-hooks:
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s karmic.d maverick.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s karmic.d natty.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s karmic.d oneiric.d
-	-cd ${prefix}/usr/lib/xen-tools/ && ln -s karmic.d precise.d
+	mkdir -p ${prefix}/usr/lib/xen-tools/precise.d/
+	cp -R hooks/precise/*-* ${prefix}/usr/lib/xen-tools/precise.d/
 	cp hooks/common.sh ${prefix}/usr/lib/xen-tools
 
 
