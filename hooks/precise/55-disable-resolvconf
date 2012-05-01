@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+#  This script disables resolvconf, since we do not want it tampered with.
+
+
+
+prefix=$1
+
+
+#
+#  Source our common functions
+#
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    . ./hooks/common.sh
+fi
+
+
+#
+# Log our start
+#
+logMessage Script $0 starting
+
+# Stop resolvconf service from starting
+echo manual > ${prefix}/etc/init/resolvconf.override
+
+# Remove whatever was picked up
+echo > ${prefix}/etc/resolvconf/resolv.conf.d/original
+
+#
+#  Log our finish
+#
+logMessage Script $0 finished
