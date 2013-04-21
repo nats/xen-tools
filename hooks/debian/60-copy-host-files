@@ -38,6 +38,11 @@ cp /etc/localtime   ${prefix}/etc
 if [ -e /etc/sudoers ]; then
 
   logMessage Installing SUDO too.
+  
+  #
+  #  Install sudo
+  #
+  installDebianPackage ${prefix} sudo
 
   #
   #  Copy file and fixup permissions.
@@ -46,10 +51,6 @@ if [ -e /etc/sudoers ]; then
   chown root:root ${prefix}/etc/sudoers
   chmod 440       ${prefix}/etc/sudoers
 
-  #
-  #  Install sudo
-  #
-  installDebianPackage ${prefix} sudo
 
 fi
 

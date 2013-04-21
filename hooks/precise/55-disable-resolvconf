@@ -25,11 +25,12 @@ logMessage Script $0 starting
 # Stop resolvconf service from starting
 echo manual > ${prefix}/etc/init/resolvconf.override
 
-# Remove whatever was picked up
-echo > ${prefix}/etc/resolvconf/resolv.conf.d/original
 
-# And unlink it so we can put a new one in later
+# unlink it so we can put a new one in later
 rm ${prefix}/etc/resolv.conf
+
+# Put back whatever was picked up
+cp ${prefix}/etc/resolvconf/resolv.conf.d/original ${prefix}/etc/resolv.conf
 
 #
 #  Log our finish
