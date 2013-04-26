@@ -896,7 +896,7 @@ if ( $CONFIG{ 'install' } )
     #
     #  Did that work?
     #
-    if ( !-x $MOUNT_POINT . "/bin/ls" )
+    if ( (!-x $MOUNT_POINT . "/bin/ls") && (!-x $MOUNT_POINT . "/usr/bin/ls")  )
     {
         logprint("System installation failed.  Aborting\n");
         $FAIL = 1;

@@ -268,7 +268,7 @@ if ( defined( $CONFIG{ 'install-method' } ) &&
         #
         foreach my $file (qw( /bin/ls /bin/cp ))
         {
-            if ( !-x $CONFIG{ 'location' } . $file )
+            if ( (!-x $CONFIG{ 'location' } . $file) && (!-x $CONFIG{ 'location' } . '/usr' . $file) )
             {
                 print "The installation of the new system has failed.\n";
                 print "\n";

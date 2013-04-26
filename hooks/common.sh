@@ -255,7 +255,12 @@ installZypperPackage ()
     #
     local uuidd="${prefix}/usr/sbin/uuidd"
     test -e ${uuidd} && mv ${uuidd} ${uuidd}.REAL
+    if [ ! -d ${prefix}/proc ]; then
+        mkdir -p ${prefix}/proc
+    fi
+    mount -o bind /proc ${prefix}/proc
     chroot ${prefix} /usr/bin/zypper -n install ${package}
+    umount ${prefix}/proc
     test -e ${uuidd}.REAL && mv ${uuidd}.REAL ${uuidd}
 }
 
