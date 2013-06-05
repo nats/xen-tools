@@ -197,17 +197,16 @@ removeDebianPackage ()
 installCentOS4Package ()
 {
     prefix=$1
-    package=$2
+    shift
 
     #
     # Log our options
     #
-    logMessage "Installing CentOS4 ${package} to prefix ${prefix}"
+    logMessage "Installing CentOS4 $@ to prefix ${prefix}"
 
     #
     #  We require a package + prefix
     #
-    assert "$LINENO" "${package}"
     assert "$LINENO" "${prefix}"
 
     #
@@ -224,7 +223,7 @@ installCentOS4Package ()
     mount -o bind /proc ${prefix}/proc
     # Run with a blank environment to prevent our environment settings 
     # from tripping up things invoked during package installation (eg, dracut)
-    chroot ${prefix} env -i /usr/bin/yum -y install ${package}
+    chroot ${prefix} env -i /usr/bin/yum -y install "$@"
     umount ${prefix}/proc
 }
 

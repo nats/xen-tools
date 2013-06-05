@@ -26,6 +26,9 @@ fi
 #
 logMessage Script $0 starting
 
+if [ ${pygrub} ]; then
+    logMessage "pygrub set, skipping module install"
+else
 
 #
 #  Copy the modules from the host to the new system - we should only
@@ -41,6 +44,8 @@ echo "Copying ${modules}"
 cp -au ${modules} ${prefix}/lib/modules
 
 generateModulesDep ${prefix}
+
+fi # if pygrub
 
 #
 #  Log our finish

@@ -30,28 +30,28 @@ logMessage Script $0 starting
 if [ ${pygrub} ]; then
 
 # remove old kernel/s
-chroot ${prefix} /usr/bin/yum remove -y kernel
+chroot ${prefix} /usr/bin/yum remove -y kernel kernel-xen
 
-#
-# Resolve the correct architecutre
-#
+if [ "${dist}" = "centos-5" ]; then
+	KERNEL_PKG="kernel-xen grub"
 
-
-if [ "${arch}" = "i386" ]; then
-	KERNEL_PKG="kernel"
+# centos-5 needs these aliases (centos-6 does not), put them in place before kernel installation so the mkinitrd includes them
+cat << EOF > ${prefix}/etc/modprobe.conf
+alias eth0 xennet
+alias scsi_hostadapter xenblk
+EOF
 	
-elif [ "${arch}" = "amd64" ]; then
-	KERNEL_PKG="kernel"
 else
-	logMessage Unkown kernel arhcitechture ${arch}
-	logMessage Script $0 failed
-	exit 1
+	KERNEL_PKG="kernel"
 fi
 
 logMessage Attempting to install package $KERNEL_PKG
 if chroot ${prefix} /usr/bin/yum info $KERNEL_PKG > /dev/null 2>&1; then
     logMessage Package $KERNEL_PKG is available - installing
+    # /sys is needed for mkinitrd
+    mount -o bind /sys ${prefix}/sys
     installCentOS4Package ${prefix} $KERNEL_PKG
+    umount ${prefix}/sys
 else
 		logMessage Package $KERNEL_PKG is not available
 		logMessage pygrub set, but kernel could not be installed
@@ -60,8 +60,8 @@ else
 fi
 
 DOMU_KERNEL=$(basename $(ls -1 ${prefix}/boot/vmlinuz* | tail -n 1))
+DOMU_RAMDISK=$(basename $(ls -1 ${prefix}/boot/init*|tail -n 1))
 KERNEL_REV=$(echo $DOMU_KERNEL | sed "s/vmlinuz-//g")
-DOMU_RAMDISK="initramfs-$KERNEL_REV.img"
 DOMU_ISSUE=$(sed -re "s/ *\\\.*//g" -e1q < ${prefix}/etc/issue)
 
 #
