@@ -197,6 +197,7 @@ install-hooks:
 	cp -R hooks/precise/*-* ${prefix}/usr/lib/xen-tools/precise.d/
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s precise.d quantal.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s precise.d raring.d
+	-cd ${prefix}/usr/lib/xen-tools/ && ln -s precise.d saucy.d
 	cp hooks/common.sh ${prefix}/usr/lib/xen-tools
 
 
