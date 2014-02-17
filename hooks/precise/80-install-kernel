@@ -58,6 +58,8 @@ else
     logMessage "initrd already exists"
 fi
 
+if test -z "$HVM" ; then
+
 # Generate grub menu.lst
 DOMU_KERNEL=$(basename $(ls -1 ${prefix}/boot/vmlinuz* | tail -n 1))
 DOMU_RAMDISK=$(basename $(ls -1 ${prefix}/boot/initrd*|tail -n 1))
@@ -70,16 +72,17 @@ timeout         2
 
 title           $DOMU_ISSUE
 root            (hd0,0)
-kernel          /boot/$DOMU_KERNEL root=/dev/xvda2 ro 
+kernel          /boot/$DOMU_KERNEL root=/dev/${disk_device}1 ro 
 initrd          /boot/$DOMU_RAMDISK
 
 title           $DOMU_ISSUE (Single-User)
 root            (hd0,0)
-kernel          /boot/$DOMU_KERNEL root=/dev/xvda2 ro single
+kernel          /boot/$DOMU_KERNEL root=/dev/${disk_device}1 ro single
 initrd          /boot/$DOMU_RAMDISK
 
 E_O_MENU
 
+fi
 
 #
 #  Install the module-init-tools package.
