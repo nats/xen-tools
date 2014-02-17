@@ -33,6 +33,7 @@ logMessage Script $0 starting
 #  Install ssh
 #
 installDebianPackage ${prefix} ssh
+chroot ${prefix} /usr/sbin/service ssh stop
 
 
 
