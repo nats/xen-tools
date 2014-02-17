@@ -76,8 +76,8 @@ default         0
 timeout         1
 
 title           $DOMU_ISSUE
-root            (hd0)
-kernel          /boot/$DOMU_KERNEL root=/dev/xvda ro 
+root            (hd0,0)
+kernel          /boot/$DOMU_KERNEL root=/dev/${disk_device}1 ro 
 initrd          /boot/$DOMU_RAMDISK
 
 E_O_MENU
