@@ -66,11 +66,18 @@ installDebianPackage ()
 {
     prefix=$1
     shift
-
     #
     # Log our options
     #
     logMessage "Installing Debian packages $@ to prefix ${prefix}"
+
+    runDebianCommand "$prefix" /usr/bin/apt-get --yes --force-yes install "$@"
+}
+
+runDebianCommand()
+{
+    prefix=$1
+    shift
 
     #
     #  We require a package + prefix
@@ -98,11 +105,13 @@ installDebianPackage ()
     #
     # Install the packages
     #
+    mount -o bind /proc ${prefix}/proc
     mount -o bind /dev ${prefix}/dev
     mount -t devpts devpts ${prefix}/dev/pts
-    DEBIAN_FRONTEND=noninteractive chroot ${prefix} /usr/bin/apt-get --yes --force-yes install "$@"
+    DEBIAN_FRONTEND=noninteractive chroot ${prefix} "$@"
     umount ${prefix}/dev/pts
     umount ${prefix}/dev
+    umount ${prefix}/proc
 
     #
     #  Remove the policy-rc.d script.
