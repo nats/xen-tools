@@ -32,8 +32,12 @@ if [ ${pygrub} ]; then
 # remove old kernel/s
 chroot ${prefix} /usr/bin/yum remove -y kernel kernel-xen
 
+KERNEL_PKG="kernel"
+
 if [ "${dist}" = "centos-5" ]; then
-	KERNEL_PKG="kernel-xen grub"
+
+if [ -z "$KVM" ]; then
+KERNEL_PKG="kernel-xen grub"
 
 # centos-5 needs these aliases (centos-6 does not), put them in place before kernel installation so the mkinitrd includes them
 cat << EOF > ${prefix}/etc/modprobe.conf
@@ -42,16 +46,24 @@ alias scsi_hostadapter xenblk
 EOF
 	
 else
-	KERNEL_PKG="kernel"
+KERNEL_PKG="kernel grub"
+
+# centos-5 needs these aliases (centos-6 does not), put them in place before kernel installation so the mkinitrd includes them
+cat << EOF > ${prefix}/etc/modprobe.conf
+alias eth0 virtio_net
+alias scsi_hostadapter virtio_blk
+EOF
+
+fi
+
 fi
 
 logMessage Attempting to install package $KERNEL_PKG
 if chroot ${prefix} /usr/bin/yum info $KERNEL_PKG > /dev/null 2>&1; then
     logMessage Package $KERNEL_PKG is available - installing
-    # /sys is needed for mkinitrd
-    mount -o bind /sys ${prefix}/sys
+    for X in sys proc dev ; do mount -o bind /$X ${prefix}/$X ; done
     installCentOS4Package ${prefix} $KERNEL_PKG
-    umount ${prefix}/sys
+    for X in sys proc dev ; do umount ${prefix}/$X ; done
 else
 		logMessage Package $KERNEL_PKG is not available
 		logMessage pygrub set, but kernel could not be installed

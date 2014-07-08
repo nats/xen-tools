@@ -147,6 +147,7 @@ install-hooks:
 	cp -R hooks/centos-4/*-* ${prefix}/usr/lib/xen-tools/centos-4.d
 	cp -R hooks/centos-5/*-* ${prefix}/usr/lib/xen-tools/centos-5.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s centos-5.d centos-6.d
+	-cd ${prefix}/usr/lib/xen-tools/ && ln -s centos-5.d centos-7.d
 	cp -R hooks/fedora-core-6/*-* ${prefix}/usr/lib/xen-tools/fedora-core-6.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-core-4.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-core-5.d
@@ -162,6 +163,8 @@ install-hooks:
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-16.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-17.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-18.d
+	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-19.d
+	-cd ${prefix}/usr/lib/xen-tools/ && ln -s fedora-core-6.d fedora-20.d
 	cp -R hooks/opensuse/*-* ${prefix}/usr/lib/xen-tools/opensuse-11.1.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s opensuse-11.1.d opensuse-11.2.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s opensuse-11.1.d opensuse-11.3.d

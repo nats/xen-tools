@@ -108,7 +108,7 @@ runDebianCommand()
     mount -o bind /proc ${prefix}/proc
     mount -o bind /dev ${prefix}/dev
     mount -t devpts devpts ${prefix}/dev/pts
-    DEBIAN_FRONTEND=noninteractive chroot ${prefix} "$@"
+    DEBIAN_FRONTEND=noninteractive chroot ${prefix} "$@" ; RESULT=$?
     umount ${prefix}/dev/pts
     umount ${prefix}/dev
     umount ${prefix}/proc
@@ -123,6 +123,7 @@ runDebianCommand()
     #
     enableStartStopDaemon ${prefix}
 
+    return $RESULT
 }
 
 
@@ -232,8 +233,10 @@ installCentOS4Package ()
     mount -o bind /proc ${prefix}/proc
     # Run with a blank environment to prevent our environment settings 
     # from tripping up things invoked during package installation (eg, dracut)
-    chroot ${prefix} env -i /usr/bin/yum -y install "$@"
+    chroot ${prefix} env -i /usr/bin/yum -y install "$@" ; RESULT=$?
     umount ${prefix}/proc
+
+    return $RESULT
 }
 
 
