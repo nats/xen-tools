@@ -34,7 +34,7 @@ if [ ${pygrub} ]; then
 #
 
 if [ "${arch}" = "i386" ]; then
-	XEN_ARCH="686"
+	XEN_ARCH="686(-pae)?$"
 elif [ "${arch}" = "amd64" ]; then
 	XEN_ARCH="amd64"
 else
@@ -60,10 +60,10 @@ else
 	logMessage Package $KERNEL_XEN_PKG is not available
 	logMessage Attempting to install the $KERNEL_PKG kernel image
 	logMessage WARNING: This kernel may not have pvops
-	if chroot ${prefix} /usr/bin/apt-cache show $KERNEL_PKG > /dev/null 2>&1; then
+	if chroot ${prefix} /usr/bin/apt-cache show "$KERNEL_PKG" > /dev/null 2>&1; then
 		logMessage Package $KERNEL_PKG is available - installing
 	    installDebianPackage ${prefix} initramfs-tools
-	    installDebianPackage ${prefix} $KERNEL_PKG
+	    installDebianPackage ${prefix} "$KERNEL_PKG"
 	else
 		logMessage Package $KERNEL_PKG is not available
 		logMessage pygrub set, but kernel could not be installed
