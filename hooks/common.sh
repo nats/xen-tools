@@ -108,7 +108,29 @@ runDebianCommand()
     mount -o bind /proc ${prefix}/proc
     mount -o bind /dev ${prefix}/dev
     mount -t devpts devpts ${prefix}/dev/pts
+    [ -e ${prefix}/etc/mtab -o -L ${prefix}/etc/mtab ] && NEEDS_MTAB=no || NEEDS_MTAB=yes
+    [ $NEEDS_MTAB = "yes" ] && chroot ${prefix} ln -s /proc/mounts /etc/mtab
     DEBIAN_FRONTEND=noninteractive chroot ${prefix} "$@" ; RESULT=$?
+
+    # Stop any processes that were left running
+    FOUND=0
+    for ROOT in /proc/*/root; do
+    LINK=$(readlink $ROOT)
+    if [ "x$LINK" != "x" ]; then
+        if [ "x${LINK:0:${#prefix}}" = "x$prefix" ]; then
+            # this process is in the chroot...
+            PID=$(basename $(dirname "$ROOT"))
+            kill "$PID"
+            FOUND=1
+        fi
+    fi
+    done
+
+    # Wait for exit
+    [ $FOUND = "1" ] && sleep 5
+
+
+    [ $NEEDS_MTAB = "yes" ] && chroot ${prefix} rm /etc/mtab
     umount ${prefix}/dev/pts
     umount ${prefix}/dev
     umount ${prefix}/proc
