@@ -176,6 +176,7 @@ install-hooks:
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s debian.d lenny.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s debian.d squeeze.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s debian.d wheezy.d
+	-cd ${prefix}/usr/lib/xen-tools/ && ln -s debian.d jessie.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s debian.d sid.d
 	-cd ${prefix}/usr/lib/xen-tools/ && ln -s debian.d testing.d
 	mkdir -p ${prefix}/usr/lib/xen-tools/gentoo.d/

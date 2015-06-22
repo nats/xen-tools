@@ -105,11 +105,16 @@ runDebianCommand()
     #
     # Install the packages
     #
-    mount -o bind /proc ${prefix}/proc
-    mount -o bind /dev ${prefix}/dev
-    mount -t devpts devpts ${prefix}/dev/pts
+    TOMOUNT=$(cat /etc/mtab | grep -Ev "$prefix| / |/run" | cut -d ' ' -f 2 | sort)
+    TOUMOUNT=$(cat /etc/mtab | grep -Ev "$prefix| / |/run" | cut -d ' ' -f 2 | sort -r)
+    
     [ -e ${prefix}/etc/mtab -o -L ${prefix}/etc/mtab ] && NEEDS_MTAB=no || NEEDS_MTAB=yes
-    [ $NEEDS_MTAB = "yes" ] && chroot ${prefix} ln -s /proc/mounts /etc/mtab
+    [ $NEEDS_MTAB = "yes" ] && (
+	cat /etc/mtab | grep -Ev "$prefix|/run" > ${prefix}/etc/mtab 
+	sed -Ei 's#[^ ]+( / .*)#/dev/'${disk_device}'1\1#'  ${prefix}/etc/mtab
+    )
+
+    for DIR in $TOMOUNT ; do mount -o bind $DIR ${prefix}$DIR ; done
     DEBIAN_FRONTEND=noninteractive chroot ${prefix} "$@" ; RESULT=$?
 
     # Stop any processes that were left running
@@ -129,11 +134,10 @@ runDebianCommand()
     # Wait for exit
     [ $FOUND = "1" ] && sleep 5
 
+    # Unmount everything
+    for DIR in $TOUMOUNT ; do umount ${prefix}$DIR ; done
 
     [ $NEEDS_MTAB = "yes" ] && chroot ${prefix} rm /etc/mtab
-    umount ${prefix}/dev/pts
-    umount ${prefix}/dev
-    umount ${prefix}/proc
 
     #
     #  Remove the policy-rc.d script.
