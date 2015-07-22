@@ -116,6 +116,25 @@ runDebianCommand()
 
     for DIR in $TOMOUNT ; do mount -o bind $DIR ${prefix}$DIR ; done
     DEBIAN_FRONTEND=noninteractive chroot ${prefix} "$@" ; RESULT=$?
+
+    # Stop any processes that were left running
+    FOUND=0
+    for ROOT in /proc/*/root; do
+    LINK=$(readlink $ROOT)
+    if [ "x$LINK" != "x" ]; then
+        if [ "x${LINK:0:${#prefix}}" = "x$prefix" ]; then
+            # this process is in the chroot...
+            PID=$(basename $(dirname "$ROOT"))
+            kill "$PID"
+            FOUND=1
+        fi
+    fi
+    done
+
+    # Wait for exit
+    [ $FOUND = "1" ] && sleep 5
+
+    # Unmount everything
     for DIR in $TOUMOUNT ; do umount ${prefix}$DIR ; done
 
     [ $NEEDS_MTAB = "yes" ] && chroot ${prefix} rm /etc/mtab
