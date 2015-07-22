@@ -99,6 +99,7 @@ install-etc:
 	-mkdir -p ${prefix}/etc/xen-tools
 	-if [ -d ${prefix}/etc/xen-tools/hook.d ]; then mv ${prefix}/etc/xen-tools/hook.d/  ${prefix}/etc/xen-tools/hook.d.obsolete ; fi
 	-mkdir -p ${prefix}/etc/xen-tools/skel/
+	chmod 755 ${prefix}/etc/xen-tools/skel/
 	-mkdir -p ${prefix}/etc/xen-tools/role.d/
 	-mkdir -p ${prefix}/etc/xen-tools/partitions.d/
 	cp etc/xen-tools.conf ${prefix}/etc/xen-tools/
