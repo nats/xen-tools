@@ -44,6 +44,13 @@ mount -o bind /proc ${prefix}/proc
 chroot ${prefix} /usr/bin/yum  clean all
 umount ${prefix}/proc
 
+# Clean on each boot; work around an issue where yum would freeze the entire system and eventually print 'Task blocked for 120 seconds'
+sed -i 's/exit 0//' ${prefix}/etc/rc.local
+cat >> ${prefix}/etc/rc.local <<'EOT'
+yum clean metadata
+exit 0
+EOT
+
 
 #
 #  Log our finish
