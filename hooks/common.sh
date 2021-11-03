@@ -257,7 +257,7 @@ installCentOS4Package ()
         mkdir -p ${prefix}/proc
     fi
     mount -o bind /proc ${prefix}/proc
-    mount -o bind /dev ${prefix}/proc
+    mount -o bind /dev ${prefix}/dev
     # Run with a blank environment to prevent our environment settings 
     # from tripping up things invoked during package installation (eg, dracut)
     chroot ${prefix} env -i /usr/bin/yum -y install "$@" ; RESULT=$?
